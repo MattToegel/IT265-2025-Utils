@@ -8,6 +8,10 @@ namespace Demo
     {
         public static Dictionary<(int, int), Tile> allTiles = new();
 
+        public static Tile GetTileAt(int x, int y) {
+            return allTiles.GetValueOrDefault((x, y));
+        }
+
         [Header("Tile Info")]
         public int gridX;
         public int gridY;
@@ -24,6 +28,7 @@ namespace Demo
             public Tile tile;
         }
 
+
         [Header("Neighbor Mapping (Inspector Only)")]
         [SerializeField]
         private List<NeighborLink> neighborLinks = new();
@@ -33,6 +38,46 @@ namespace Demo
         {
             return neighborLinks;
         }
+        private void Awake() {
+            allTiles.Add((gridX, gridY), this);
+        }
+        public static List<(Tile tile, int distance)> GetTilesInRangeOrdered(Tile startTile, int range) {
+            List<(Tile tile, int distance)> result = new();
+            Queue<(Tile tile, int depth)> queue = new();
+            HashSet<Tile> visited = new();
+
+            queue.Enqueue((startTile, 0));
+            visited.Add(startTile);
+
+            while (queue.Count > 0) {
+                var (current, depth) = queue.Dequeue();
+
+                if (depth > range)
+                    continue;
+
+                if (current != startTile) // exclude start tile from result
+                    result.Add((current, depth));
+
+                foreach (var neighborLink in current.GetAvailableNeighbors()) {
+                    Tile neighbor = neighborLink.tile;
+                    if (neighbor != null && !visited.Contains(neighbor)) {
+                        visited.Add(neighbor);
+                        queue.Enqueue((neighbor, depth + 1));
+                    }
+                }
+            }
+
+            result.Sort((a, b) => a.distance.CompareTo(b.distance));
+
+            return result;
+        }
+
+        public static List<(Tile tile, int distance)> GetTilesInRange(int startX, int startY, int range) {
+            Tile start = GetTileAt(startX, startY);
+            return start != null ? GetTilesInRangeOrdered(start, range) : new List<(Tile tile, int distance)>();
+
+        }
+
         public void Initialize(int x, int y, HashSet<Direction> directions)
         {
             gridX = x;

@@ -32,7 +32,8 @@ namespace Demo
                 Piece piece = Instantiate(startingPiecePrefab, piecesParent);
                 player.controlledPiece = piece;
                 // TODO: Assign starting tile like 0,0 later here
-                
+                piece.currentTile = Tile.GetTileAt(0, 0);
+                Debug.Log($"Tile: {piece.currentTile}");
                 players.Add(player);
             }
         }
