@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 8021819064529379370}
   - component: {fileID: 1445183681749161140}
   - component: {fileID: 2824790259815855290}
+  - component: {fileID: -2298473201442690977}
   m_Layer: 0
   m_Name: RedCube
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,3 +109,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-2298473201442690977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2378905525611449315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f34e12e8766e4bfb880c5bae5999c92b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridX: 0
+  gridY: 0
+  allowedDirections: 
+  showGizmosInEditor: 1
+  gizmoOffset: {x: 0, y: 0.5, z: 0}
+  debugNeighborInfo: []
