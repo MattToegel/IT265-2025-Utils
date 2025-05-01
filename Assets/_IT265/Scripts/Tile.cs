@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Demo
 {
@@ -21,6 +22,8 @@ namespace Demo
         [SerializeField]
         private List<Direction> allowedDirections = new();
 
+        [SerializeField] public UnityEvent<TileType> onTileTriggered;
+
         [System.Serializable]
         public class NeighborLink
         {
@@ -28,6 +31,12 @@ namespace Demo
             public Tile tile;
         }
 
+        public enum TileType
+        {
+            POSITIVE, NEGATIVE, NEUTRAL
+        }
+
+        public TileType type;
 
         [Header("Neighbor Mapping (Inspector Only)")]
         [SerializeField]
@@ -37,6 +46,11 @@ namespace Demo
         public List<NeighborLink> GetAvailableNeighbors()
         {
             return neighborLinks;
+        }
+
+        public void TriggerAction()
+        {
+            onTileTriggered?.Invoke(type);
         }
         private void Awake() {
             allTiles.Add((gridX, gridY), this);

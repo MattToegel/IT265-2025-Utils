@@ -6,6 +6,8 @@ namespace Demo
     public class PlayerManager : MonoBehaviour
     {
         public static PlayerManager Instance { get; private set; }
+        [SerializeField] private CameraFollower follow;
+        [SerializeField] private Transform container;
 
         public List<Player> players = new();
         private int currentPlayerIndex = 0;
@@ -13,10 +15,15 @@ namespace Demo
         public GameObject playerPrefab;
         public Transform piecesParent; // where spawned pieces go
         public Piece startingPiecePrefab; // piece to assign each player
-
+        
         private void Awake()
         {
             Instance = this;
+        }
+
+        public Player CurrentPlayer()
+        {
+            return players[currentPlayerIndex];
         }
         // TODO add logic for piece getting defeated (reset to start?)
 
@@ -28,14 +35,17 @@ namespace Demo
             for (int i = 0; i < count; i++)
             {
                 GameObject playerObj = Instantiate(playerPrefab);
+                playerObj.transform.parent = container ;
                 playerObj.name = $"Player {i + 1}";
                 Player player = playerObj.GetComponent<Player>();
 
                 Piece piece = Instantiate(startingPiecePrefab, piecesParent);
                 player.controlledPiece = piece;
                 // TODO: Assign starting tile like 0,0 later here
-                piece.currentTile = Tile.GetTileAt(0, 0);
+                piece.SetTile(Tile.GetTileAt(0, 0));
+                piece.controller = player;
                 Debug.Log($"Tile: {piece.currentTile}");
+                piece.Init();
                 players.Add(player);
             }
         }
@@ -47,7 +57,7 @@ namespace Demo
 
         public void EndTurn()
         {
-            players[currentPlayerIndex].EndTurn();
+            CurrentPlayer().EndTurn();
 
             currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
 
@@ -56,12 +66,16 @@ namespace Demo
 
         public void Roll()
         {
-            players[currentPlayerIndex].RollDiceAndMove();
+            CurrentPlayer().RollDiceAndMove();
+            UIManager.Instance.rollDiceButton.gameObject.SetActive(false);
         }
 
         public void StartCurrentPlayerTurn()
         {
-            players[currentPlayerIndex].StartTurn();
+            
+            follow.FocusOnTarget(CurrentPlayer().controlledPiece.transform);
+            UIManager.Instance.rollDiceButton.gameObject.SetActive(true);
+            CurrentPlayer().StartTurn();
         }
     }
 }

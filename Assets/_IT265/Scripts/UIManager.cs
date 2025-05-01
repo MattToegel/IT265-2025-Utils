@@ -21,10 +21,12 @@ namespace Demo
         [Header("Turn UI")] public GameObject turnPanel;
         public Button endTurnButton;
         public Button rollDiceButton;
+        [Header("Game Over UI")] public GameObject gameOverPanel;
+        public TMP_Text gameOverText;
         private void Awake()
         {
             Instance = this;
-
+            gameOverPanel.SetActive(false);
             startGameButton.onClick.AddListener(OnStartGamePressed);
             continueButton.onClick.AddListener(OnContinuePressed);
 
@@ -46,6 +48,7 @@ namespace Demo
                 startGamePanel.SetActive(false);
                 PlayerManager.Instance.CreatePlayers(playerCount);
                 PlayerManager.Instance.StartGame();
+                turnPanel.SetActive(true);
             }
             else
             {
@@ -58,13 +61,19 @@ namespace Demo
             turnPanel.SetActive(false);
             passDeviceText.text = $"Pass the device to Player {nextPlayerNumber + 1}";
             passDevicePanel.SetActive(true);
+            EventLog.Instance.Log($"Pass the device to Player {nextPlayerNumber + 1}");
         }
 
         private void OnContinuePressed()
         {
+            turnPanel.SetActive(true);
             passDevicePanel.SetActive(false);
             PlayerManager.Instance.StartCurrentPlayerTurn();
             OnTurn();
+        }
+        public void ShowWinner(string winner) {
+            gameOverText.text = winner;
+            gameOverPanel.SetActive(true);
         }
     }
 }

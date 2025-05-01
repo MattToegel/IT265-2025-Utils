@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2824790259815855290}
   - component: {fileID: -2298473201442690977}
   m_Layer: 0
-  m_Name: RedCube
+  m_Name: WhiteCube
   m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9a57022d9ef244d4c97861c43c221b57, type: 2}
+  - {fileID: 2100000, guid: 18ea5bd008c700b478c26e11b8512118, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -128,5 +128,5 @@ MonoBehaviour:
   onTileTriggered:
     m_PersistentCalls:
       m_Calls: []
-  type: 1
+  type: 2
   neighborLinks: []
