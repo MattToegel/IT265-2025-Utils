@@ -18,7 +18,9 @@ namespace Demo
         {
             Instance = this;
         }
+        // TODO add logic for piece getting defeated (reset to start?)
 
+        // TODO add logic for collecting something (game currency/win condition)
         public void CreatePlayers(int count)
         {
             players.Clear();
