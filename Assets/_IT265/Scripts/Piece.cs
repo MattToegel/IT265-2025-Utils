@@ -95,7 +95,10 @@ namespace Demo
         public void TakeDamage(int incoming)
         {
             health = math.max(health - incoming, 0);
-            ui.SetLife(health / (maxHealth * 1.0f));
+            EventLog.Instance.Log($"{controller.name} is now at {health} health");
+            float p = health / (maxHealth * 1.0f);
+            Debug.Log($"Health percent: {p}");
+            ui.SetLife(p);
             if (health == 0)
             {
                 Restore();
